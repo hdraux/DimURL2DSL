@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FACET_OPTIONS } from "../utils/constants";
 import { DSL_MAPPING } from "../utils/facetMappings";
 import { getSourceTypeFromUrl, getNumericFields } from "../utils/dslUtils";
@@ -12,6 +12,12 @@ export default function DimensionsDSLConverter() {
   const [sourceType, setSourceType] = useState("publications");
   const [availableFacets, setAvailableFacets] = useState(FACET_OPTIONS.publications);
 
+  useEffect(() => {
+    if (!selectedFacet || !availableFacets.includes(selectedFacet)) {
+      setSelectedFacet(availableFacets[0]);
+    }
+  }, [availableFacets]);
+
   const handleUrlChange = (e) => {
     const newUrl = e.target.value;
     setUrl(newUrl);
@@ -22,13 +28,7 @@ export default function DimensionsDSLConverter() {
         setSourceType(detectedSourceType);
         const newAvailableFacets = FACET_OPTIONS[detectedSourceType] || [detectedSourceType];
         setAvailableFacets(newAvailableFacets);
-
-        if (!selectedFacet || !newAvailableFacets.includes(selectedFacet)) {
-          setSelectedFacet(detectedSourceType);
-        }
-      } catch (err) {
-        // URL invalid: skip update
-      }
+      } catch (err) {}
     }
   };
 
@@ -52,10 +52,6 @@ export default function DimensionsDSLConverter() {
       const newAvailableFacets = FACET_OPTIONS[detectedSourceType] || [detectedSourceType];
       setAvailableFacets(newAvailableFacets);
 
-      if (!selectedFacet || !newAvailableFacets.includes(selectedFacet)) {
-        setSelectedFacet(detectedSourceType);
-      }
-
       const orConditions = {};
       const skippedFields = [];
 
@@ -68,15 +64,16 @@ export default function DimensionsDSLConverter() {
           if (dslField) {
             const shouldQuote = !numericFields.includes(dslField) || isNaN(value);
             const quoted = shouldQuote ? `"${value}"` : value;
-
             if (isOr) {
               orConditions[dslField] = orConditions[dslField] || [];
               orConditions[dslField].push(quoted);
             } else {
               dslConditions.push(`${dslField} = ${quoted}`);
             }
-          } else if (detectedSourceType === "clinical_trials" &&
-                     ["research_org_country", "research_org_state", "research_org_city"].includes(facet)) {
+          } else if (
+            detectedSourceType === "clinical_trials" &&
+            ["research_org_country", "research_org_state", "research_org_city"].includes(facet)
+          ) {
             skippedFields.push(facet);
           }
         }
@@ -90,18 +87,23 @@ export default function DimensionsDSLConverter() {
         );
       }
 
+      const facetToReturn = selectedFacet && newAvailableFacets.includes(selectedFacet)
+        ? selectedFacet
+        : newAvailableFacets[0];
+
       let query = `search ${detectedSourceType}`;
       if (dslConditions.length > 0) {
-        query += `\nwhere ${dslConditions.join(" and ")}`;
+        query += `
+where ${dslConditions.join(" and ")}`;
       }
-      query += `\nreturn ${selectedFacet}`;
+      query += `
+return ${facetToReturn}`;
 
       setDslQuery(query);
 
       if (skippedFields.length > 0) {
         setError(`Warning: Skipped unsupported filters: ${skippedFields.join(", ")}`);
       }
-
     } catch (err) {
       setError(err.message);
       setDslQuery("");
@@ -112,9 +114,11 @@ export default function DimensionsDSLConverter() {
 
   const copyToClipboard = () => {
     if (dslQuery) {
-      navigator.clipboard.writeText(dslQuery)
-        .then(() => alert("DSL query copied to clipboard!"))
-        .catch(err => console.error("Failed to copy:", err));
+      navigator.clipboard.writeText(dslQuery).then(() => {
+        alert("DSL query copied to clipboard!");
+      }).catch(err => {
+        console.error("Failed to copy:", err);
+      });
     }
   };
 
@@ -133,7 +137,7 @@ export default function DimensionsDSLConverter() {
             value={url}
             onChange={handleUrlChange}
             placeholder="https://app.dimensions.ai/discover/publication?and_facet_year=2024"
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-md"
           />
           <button
             onClick={() => convertUrlToDsl(url)}
