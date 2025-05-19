@@ -1,8 +1,234 @@
-export const FACETS = {
-  publications: ["publications", "authors_count", "category_bra", "category_for", "category_for_2020"],
-  grants: ["grants", "active_status", "active_year", "category_bra", "category_for"],
-  patents: ["patents", "assignee_cities", "category_bra", "category_for"],
-  clinical_trials: ["clinical_trials", "active_years", "category_bra", "category_for"],
-  policy_documents: ["policy_documents", "category_bra", "category_for"],
-  datasets: ["datasets", "authors", "category_bra", "category_for"]
+// All available facets for each source type
+export const PUBLICATION_FACETS = [
+  "publications", // default return type
+  "authors_count",
+  "category_bra",
+  "category_for",
+  "category_for_2020",
+  "category_hra",
+  "category_hrcs_hc",
+  "category_hrcs_rac",
+  "category_icrp_cso",
+  "category_icrp_ct",
+  "category_rcdc",
+  "category_sdg",
+  "category_uoa",
+  "document_type",
+  "funder_countries",
+  "funders",
+  "journal",
+  "journal_lists",
+  "mesh_terms",
+  "open_access",
+  "publisher",
+  "referenced_pubs",
+  "research_org_cities",
+  "research_org_countries",
+  "research_org_state_codes",
+  "research_org_types",
+  "research_orgs",
+  "researchers",
+  "source_title",
+  "times_cited",
+  "type",
+  "year"
+];
+
+export const GRANT_FACETS = [
+  "grants", // default return type
+  "active_status",
+  "active_year",
+  "category_bra",
+  "category_for",
+  "category_for_2020",
+  "category_hra",
+  "category_hrcs_hc",
+  "category_hrcs_rac",
+  "category_icrp_cso",
+  "category_icrp_ct",
+  "category_rcdc", 
+  "category_sdg",
+  "category_uoa",
+  "funder_org_acronym",
+  "funder_org_cities",
+  "funder_org_countries",
+  "funder_org_name",
+  "funder_org_states",
+  "funder_orgs",
+  "funding_currency",
+  "keywords",
+  "language",
+  "language_title",
+  "research_org_cities",
+  "research_org_countries",
+  "research_org_state_codes",
+  "research_org_types",
+  "research_orgs",
+  "researchers",
+  "start_year"
+];
+
+export const PATENT_FACETS = [
+  "patents", // default return type
+  "assignee_cities",
+  "assignee_countries",
+  "assignee_state_codes",
+  "assignees",
+  "category_bra",
+  "category_for",
+  "category_for_2020",
+  "category_hra",
+  "category_hrcs_hc",
+  "category_hrcs_rac",
+  "category_icrp_cso",
+  "category_icrp_ct",
+  "category_rcdc",
+  "cpc",
+  "current_assignees",
+  "family_count",
+  "family_id",
+  "funder_countries",
+  "funders",
+  "granted_year",
+  "ipcr",
+  "jurisdiction",
+  "kind",
+  "original_assignees",
+  "priority_year",
+  "publication_year",
+  "publications",
+  "researchers",
+  "times_cited",
+  "year"
+];
+
+export const CLINICAL_TRIAL_FACETS = [
+  "clinical_trials", // default return type
+  "active_years",
+  "category_bra",
+  "category_for",
+  "category_for_2020",
+  "category_hra",
+  "category_hrcs_hc",
+  "category_hrcs_rac",
+  "category_icrp_cso",
+  "category_icrp_ct",
+  "category_rcdc",
+  "funder_countries",
+  "funders",
+  "mesh_terms",
+  "publications",
+  "research_orgs",
+  "researchers",
+  "study_arms",
+  "study_designs",
+  "study_maximum_age",
+  "study_minimum_age",
+  "study_participants",
+  "study_type"
+];
+
+export const POLICY_DOCUMENT_FACETS = [
+  "policy_documents", // default return type
+  "category_bra",
+  "category_for",
+  "category_for_2020",
+  "category_hra",
+  "category_hrcs_hc",
+  "category_hrcs_rac",
+  "category_icrp_cso",
+  "category_icrp_ct",
+  "category_rcdc",
+  "date_inserted",
+  "dimensions_url",
+  "id",
+  "linkout",
+  "publication_ids",
+  "publications",
+  "publisher_org",
+  "publisher_org_city",
+  "publisher_org_country",
+  "publisher_org_state",
+  "score",
+  "title",
+  "year"
+];
+
+export const DATASET_FACETS = [
+  "datasets", // default return type
+  "associated_grant_ids",
+  "associated_publication",
+  "associated_publication_id",
+  "authors",
+  "category_bra",
+  "category_for",
+  "category_for_2020",
+  "category_hra",
+  "category_hrcs_hc",
+  "category_hrcs_rac",
+  "category_icrp_cso",
+  "category_icrp_ct",
+  "category_rcdc",
+  "category_sdg",
+  "date",
+  "date_created",
+  "date_embargo",
+  "date_inserted",
+  "date_modified",
+  "description",
+  "dimensions_url",
+  "doi",
+  "figshare_url",
+  "funder_countries",
+  "funders",
+  "id",
+  "journal",
+  "keywords",
+  "language_desc",
+  "language_title",
+  "license_name",
+  "license_url",
+  "repository",
+  "research_org_cities",
+  "research_org_countries",
+  "research_org_states",
+  "research_orgs",
+  "researchers",
+  "score",
+  "title",
+  "year"
+];
+
+// Source type to facets mapping
+export const SOURCE_TYPE_FACETS = {
+  publications: PUBLICATION_FACETS,
+  grants: GRANT_FACETS,
+  patents: PATENT_FACETS,
+  clinical_trials: CLINICAL_TRIAL_FACETS,
+  policy_documents: POLICY_DOCUMENT_FACETS,
+  datasets: DATASET_FACETS
+};
+
+// Numeric fields that should not be quoted in DSL
+export const NUMERIC_FIELDS = [
+  "year",
+  "start_year",
+  "active_year",
+  "granted_year",
+  "priority_year",
+  "filed_year",
+  "publication_year",
+  "active_years",
+  "times_cited",
+  "family_count"
+];
+
+// Example URLs for different source types
+export const EXAMPLE_URLS = {
+  publications: "https://app.dimensions.ai/discover/publication?and_facet_year=2023&and_facet_open_access_status=oa",
+  grants: "https://app.dimensions.ai/discover/grant?and_facet_funder=nsf&and_facet_year=2022",
+  patents: "https://app.dimensions.ai/discover/patent?and_facet_jurisdiction=us&and_facet_year=2023",
+  clinical_trials: "https://app.dimensions.ai/discover/clinical_trial?and_facet_active_year=2023&and_facet_phase=phase_3",
+  policy_documents: "https://app.dimensions.ai/discover/policy_document?and_facet_year=2023&and_facet_publisher_org_country=united_states",
+  datasets: "https://app.dimensions.ai/discover/dataset?and_facet_year=2023&and_facet_repository=figshare"
 };
