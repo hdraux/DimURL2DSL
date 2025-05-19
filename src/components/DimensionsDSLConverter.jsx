@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   getSourceTypeFromUrl, 
   getFacetsForSourceType, 
@@ -16,6 +16,13 @@ export default function DimensionsDSLConverter() {
   const [selectedFacet, setSelectedFacet] = useState("");
   const [sourceType, setSourceType] = useState("publications");
   const [availableFacets, setAvailableFacets] = useState([]);
+
+  // Initialize facets on component mount
+  useEffect(() => {
+    const initialFacets = getFacetsForSourceType(sourceType);
+    setAvailableFacets(initialFacets);
+    setSelectedFacet(sourceType);
+  }, []);
 
   // Handle URL input change
   const handleUrlChange = (e) => {
@@ -51,6 +58,16 @@ export default function DimensionsDSLConverter() {
       }
       
       const { query, detectedSourceType, skippedFields } = convertUrlToDsl(url, selectedFacet);
+      
+      // Update source type and available facets in the UI
+      setSourceType(detectedSourceType);
+      const newAvailableFacets = getFacetsForSourceType(detectedSourceType);
+      setAvailableFacets(newAvailableFacets);
+      
+      // Set default selected facet if not already set or not valid for this source type
+      if (!selectedFacet || !newAvailableFacets.includes(selectedFacet)) {
+        setSelectedFacet(detectedSourceType);
+      }
       
       setDslQuery(query);
       
