@@ -1,9 +1,11 @@
 import DimensionsDSLConverter from './components/DimensionsDSLConverter';
 
-export default function App() {
+function App() {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
       <DimensionsDSLConverter />
     </div>
   );
 }
+
+export default App;
