@@ -1,15 +1,8 @@
-export const PUBLICATION_FACETS = [];
-export const GRANT_FACETS = [];
-export const PATENT_FACETS = [];
-export const CLINICAL_TRIAL_FACETS = [];
-export const POLICY_DOCUMENT_FACETS = [];
-export const DATASET_FACETS = [];
-
-export const FACET_OPTIONS = {
-  publications: PUBLICATION_FACETS,
-  grants: GRANT_FACETS,
-  patents: PATENT_FACETS,
-  clinical_trials: CLINICAL_TRIAL_FACETS,
-  policy_documents: POLICY_DOCUMENT_FACETS,
-  datasets: DATASET_FACETS
+export const FACETS = {
+  publications: ["publications", "authors_count", "category_bra", "category_for", "category_for_2020"],
+  grants: ["grants", "active_status", "active_year", "category_bra", "category_for"],
+  patents: ["patents", "assignee_cities", "category_bra", "category_for"],
+  clinical_trials: ["clinical_trials", "active_years", "category_bra", "category_for"],
+  policy_documents: ["policy_documents", "category_bra", "category_for"],
+  datasets: ["datasets", "authors", "category_bra", "category_for"]
 };
